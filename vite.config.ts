@@ -1,10 +1,20 @@
-import { reactRouter } from "@react-router/dev/vite";
-import tailwindcss from "@tailwindcss/vite";
+import babel from "@rolldown/plugin-babel";
+import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import tailwindcss from '@tailwindcss/vite'
+import path from "path";
 
+// https://vite.dev/config/
 export default defineConfig({
-  plugins: [tailwindcss(), reactRouter()],
-  resolve: {
-    tsconfigPaths: true,
-  },
+  plugins: [
+    react(),
+    tailwindcss(), 
+    babel({ presets: [reactCompilerPreset()] })],
+    base: '/cinefy',
+    resolve: {
+      alias: {
+      "@": path.resolve(__dirname, "src")
+      }
+    }
+
 });
