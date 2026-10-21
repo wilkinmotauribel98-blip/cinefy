@@ -3,9 +3,7 @@ import { lazy } from 'react'
 import Header from '@/components/layout/Header'
 
 const HomePage = lazy(()=> import('@/pages/HomePage'))
-
-
-
+const ResultPage = lazy(()=> import('@/pages/ResultsPage'))
 
 function App() {
   
@@ -14,6 +12,7 @@ function App() {
       <Header />
       <Routes>
         <Route path='/' element={<HomePage />}/>
+        <Route path='/search' element={<ResultPage />}/>
       </Routes>
     </>
   )

@@ -1,20 +1,3 @@
-export interface MovieType {
-    poster_path:       string;
-    adult:             boolean;
-    overview:          string;
-    release_date:      Date;
-    genre_ids:         number[];
-    id:                number;
-    original_title:    string;
-    original_language: string;
-    title:             string;
-    backdrop_path:     string;
-    popularity:        number;
-    vote_count:        number;
-    video:             boolean;
-    vote_average:      number;
-}
-
 export interface SearchResponse {
     page:          number;
     results:       Result[];
@@ -25,20 +8,25 @@ export interface SearchResponse {
 export interface Result {
     adult:             boolean;
     backdrop_path:     null | string;
-    genre_ids:         number[];
     id:                number;
-    title:             string;
+    title?:            string;
     original_language: OriginalLanguage;
-    original_title:    string;
+    original_title?:   string;
     overview:          string;
+    poster_path:       string;
+    media_type:        MediaType;
+    genre_ids:         number[];
     popularity:        number;
-    poster_path:       null | string;
-    release_date:      string;
-    softcore:          boolean;
-    video:             boolean;
+    release_date?:     string;
+    video?:            boolean;
     vote_average:      number;
     vote_count:        number;
+    name?:             string;
+    original_name?:    string;
+    first_air_date?:   string;
+    origin_country?:   string[];
 }
 
-export type OriginalLanguage = "en" | "fr" | "he";
+export type MediaType = "movie" | "tv";
 
+export type OriginalLanguage = "en" | "ja";
