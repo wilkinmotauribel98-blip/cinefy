@@ -22,10 +22,17 @@ export default function Searcher() {
     }, [data])
   
   return (
-    <form className="mt-7">
-      <div className="border-3 border-button bg-secondary rounded-full px-10">
+    <form
+      className="mt-7"
+      role="search"
+      onSubmit={(e)=> e.preventDefault()}
+    >
+      <div className="border-3 border-button bg-secondary rounded-full px-10 focus-within:ring-2 focus-within:ring-white/60">
         <input
+          id="searcher-input"
+          name="q"
           type="search"
+          aria-label="Search your favorite movies and series"
           placeholder="Search your favorites movies"
           onChange={(e)=>{
             setQuery(e.target.value)

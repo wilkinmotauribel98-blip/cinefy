@@ -17,8 +17,8 @@ export default function Header(){
         </Link>
       </div>
       <div className="flex gap-3">
-        <span className="text-zinc-300 text-xl ">Favoritos</span>
-        <span className="rounded-full w-6 h-6 bg-red-400 text-white text-center">3</span>
+        <span className="text-zinc-300 text-xl ">Favorites</span>
+        <span className="rounded-full w-6 h-6 bg-red-600 text-white text-center">3</span>
       </div>
     </header>
   )

@@ -1,5 +1,5 @@
 import { type Result } from "@/types/types"
-
+import { Link } from "react-router-dom"
 type ResultCardProps = {
   result: Result
 }
@@ -19,11 +19,15 @@ export default function ResultCard( { result }: ResultCardProps){
   
   
   return(
+    <Link 
+      to={''}
+    >
     <article className="rounded-2xl bg-secondary overflow-hidden ">
       <div className="rounded-2xl overflow-hidden" >
         <img src={`https://image.tmdb.org/t/p/w500/${poster_path || backdrop_path }`} 
-        alt=""
-        className="aspect-auto"
+        alt={`Poster of ${title || name || original_title}`}
+        loading="lazy"
+        className="aspect-5/7 h-full"
         />
       </div>
       <div className="py-3 pl-4">
@@ -35,5 +39,6 @@ export default function ResultCard( { result }: ResultCardProps){
         </span>
       </div>
     </article>
+    </Link>
   )
 }

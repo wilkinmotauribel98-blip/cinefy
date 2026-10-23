@@ -5,6 +5,7 @@ export interface SearchResponse {
     total_results: number;
 }
 
+
 export interface Result {
     adult:             boolean;
     backdrop_path:     null | string;
@@ -27,6 +28,6 @@ export interface Result {
     origin_country?:   string[];
 }
 
-export type MediaType = "movie" | "tv";
+export type MediaType = "movie" | "tv" | 'person';
 
 export type OriginalLanguage = "en" | "ja";

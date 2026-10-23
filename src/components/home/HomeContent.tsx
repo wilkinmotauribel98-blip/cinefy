@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useDebounce } from "@/hooks/useDebounce";
 import { useFetch } from "@/hooks/useFetch";
 import { type SearchResponse } from "@/types/types";
-import { useSearchParams } from "react-router-dom";
+
 export const Tags = {
   MOVIES: 'Movies',
   SERIES: 'Series',
@@ -14,14 +14,13 @@ export const Tags = {
 
 export default function HomeContent(){
 
-  const [searchParams] = useSearchParams()
   const { MOVIES, SERIES, FAVORITES, ALL } = Tags
   const [active, setActive] = useState<string>(ALL);
   const [size, setSize] = useState<number>(window.innerWidth);
   const [query, setQuery] = useState<string>(); 
   const debouncedQuery = useDebounce(query, 400);
   const SEARCH_URL = `https://api.themoviedb.org/3/search/multi?query=${debouncedQuery || ''}`
-  const { data } = useFetch<SearchResponse>(SEARCH_URL);
+  const { data, loading } = useFetch<SearchResponse>(SEARCH_URL);
 
   
   useEffect(()=>{
@@ -38,16 +37,25 @@ export default function HomeContent(){
   }, [active, size])
   
 
-  if(!data) return
+  if(!data) return (
+    <p role="status" className="text-zinc-400 text-lg mt-7">
+      {loading ? "Loading results…" : "Results could not be loaded."}
+    </p>
+  )
   
   return(
     <>
 
-    <form className="mt-7">
-      <div className="border-3 border-button bg-secondary rounded-full px-10">
+    <form 
+      className="mt-7"
+      role="search"
+      onSubmit={(e)=> e.preventDefault()}
+      >
+      <div className="border-3 border-button bg-secondary rounded-full px-10 focus-within:ring-2 focus-within:ring-white/60">
         <input
           type="search"
-          placeholder="Search your favorites movies"
+          aria-label="Search your favorites movies and series"
+          placeholder="Search your favorites movies and series"
           onChange={(e)=>{
             setQuery(e.target.value)
           }}
@@ -56,7 +64,11 @@ export default function HomeContent(){
       </div>
     </form>
 
-    <section className="flex gap-3 mt-5 ">
+    <section 
+      className="flex gap-3 mt-5"
+      role="group"
+      aria-label="Filter results"
+      >
       <TagButton title={ALL} isActive={active == ALL} setActive={setActive} />
       <TagButton title={MOVIES} isActive={active == MOVIES} setActive={setActive}/>
       <TagButton title={SERIES} isActive={active == SERIES} setActive={setActive}/>
