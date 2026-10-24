@@ -12,7 +12,8 @@ export default function ResultCard( { result }: ResultCardProps){
     media_type,
     first_air_date,
     title,
-    name 
+    name,
+    id 
   } = result
 
   if(backdrop_path == null && poster_path == null) return
@@ -20,7 +21,7 @@ export default function ResultCard( { result }: ResultCardProps){
   
   return(
     <Link 
-      to={''}
+      to={`/details/${media_type}/${id}/${title?.replace(/\s/g, '-') || name?.replace(/\s/g, '-') || original_title?.replace(/\s/g, '-')}`}
     >
     <article className="rounded-2xl bg-secondary overflow-hidden ">
       <div className="rounded-2xl overflow-hidden" >

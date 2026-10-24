@@ -39,7 +39,7 @@ export default function RenderResults({ filter, data, query }:RenderResultsProps
 
     
   return(
-   <section className="px-5 mt-5">
+   <section className="mt-5">
     <div className="flex justify-between">
       {filtereds.length > 0 && <>
       <h2 className="text-2xl text-white font-semibold">Results</h2>
@@ -53,7 +53,7 @@ export default function RenderResults({ filter, data, query }:RenderResultsProps
         No results found.
       </p>
     )}
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(140px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(220px,1fr))] mt-5 gap-4 md:gap-7">
+    <div className="grid px-3 grid-cols-[repeat(auto-fill,minmax(140px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(220px,1fr))] mt-5 gap-4 md:gap-7">
       {filtereds.map((r)=> <ResultCard key={r.id} result={r}/>)}
     </div>
     {filtereds.length > 0 && <nav aria-label="Pagination">
