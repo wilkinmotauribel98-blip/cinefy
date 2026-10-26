@@ -1,9 +1,8 @@
 import { type Result } from "@/types/types"
 import { Link } from "react-router-dom"
-type ResultCardProps = {
-  result: Result
-}
-export default function ResultCard( { result }: ResultCardProps){
+import { optimizedImg } from "@/utils/optimizedImg"
+
+export default function ResultCard( { result } : {result: Result}){
   const {
     poster_path,
     original_title,
@@ -25,7 +24,7 @@ export default function ResultCard( { result }: ResultCardProps){
     >
     <article className="rounded-2xl bg-secondary overflow-hidden ">
       <div className="rounded-2xl overflow-hidden" >
-        <img src={`https://image.tmdb.org/t/p/w500/${poster_path || backdrop_path }`} 
+        <img src={optimizedImg(`https://image.tmdb.org/t/p/w500/${poster_path || backdrop_path }`, 420, 620)} 
         alt={`Poster of ${title || name || original_title}`}
         loading="lazy"
         className="aspect-5/7 h-full"

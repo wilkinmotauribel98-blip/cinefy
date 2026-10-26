@@ -20,12 +20,10 @@ export default function HomeContent(){
   const [query, setQuery] = useState<string>(); 
   const debouncedQuery = useDebounce(query, 400);
   const SEARCH_URL = `https://api.themoviedb.org/3/search/multi?query=${debouncedQuery || ''}`
-  const { data, loading } = useFetch<SearchResponse>(SEARCH_URL);
+  const { data, loading, error } = useFetch<SearchResponse>(SEARCH_URL);
 
   
-  useEffect(()=>{
-    
-  })
+
   useEffect(()=>{
     const sizer = ()=> setSize(window.innerWidth);
     addEventListener('resize', sizer);
@@ -39,7 +37,7 @@ export default function HomeContent(){
 
   if(!data) return (
     <p role="status" className="text-zinc-400 text-lg mt-7">
-      {loading ? "Loading results…" : "Results could not be loaded."}
+      {loading ? "Loading results…" : error ? "Results could not be loaded." : "No results found."}
     </p>
   )
   

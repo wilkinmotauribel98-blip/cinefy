@@ -8,8 +8,6 @@ export default function HomePage(){
         <p className="text-zinc-400 text-lg">Search by title, save your favorites, and keep exploring.</p>
       </div>
         <HomeContent />
-    
-      
     </main>
   )
 }

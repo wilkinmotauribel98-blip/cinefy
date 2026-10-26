@@ -27,7 +27,33 @@ export interface DetailsMovieType {
     video:                 boolean;
     vote_average:          number;
     vote_count:            number;
+    credits: Credits;
 }
+
+export interface Credits {
+    cast: Cast[];
+    crew: Cast[];
+}
+
+export interface Cast {
+    adult:                boolean;
+    gender:               number;
+    id:                   number;
+    known_for_department: Department;
+    name:                 string;
+    original_name:        string;
+    popularity:           number;
+    profile_path:         null | string;
+    cast_id?:             number;
+    character?:           string;
+    credit_id:            string;
+    order?:               number;
+    department?:          Department;
+    job?:                 string;
+}
+
+export type Department = "Acting" | "Crew" | "Directing" | "Costume & Make-Up" | "Production" | "Art" | "Writing" | "Sound" | "Visual Effects" | "Editing" | "Camera" | "Lighting";
+
 
 export interface BelongsToCollection {
     id:            number;
@@ -94,6 +120,7 @@ export interface DetailsSeriesType {
     type:                 string;
     vote_average:         number;
     vote_count:           number;
+    credits: Credits;
 }
 
 export interface CreatedBy {
@@ -104,10 +131,6 @@ export interface CreatedBy {
     profile_path: string;
 }
 
-export interface Genre {
-    id:   number;
-    name: string;
-}
 
 export interface LastEpisodeToAir {
     id:              number;
@@ -131,10 +154,7 @@ export interface Network {
     origin_country: string;
 }
 
-export interface ProductionCountry {
-    iso_3166_1: string;
-    name:       string;
-}
+
 
 export interface Season {
     air_date:      Date;
@@ -147,8 +167,3 @@ export interface Season {
     vote_average:  number;
 }
 
-export interface SpokenLanguage {
-    english_name: string;
-    iso_639_1:    string;
-    name:         string;
-}
