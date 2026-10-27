@@ -167,3 +167,57 @@ export interface Season {
     vote_average:  number;
 }
 
+
+export type Episodes = Episode[];
+
+export interface Episode {
+    _id:           string;
+    air_date:      Date;
+    episodes:      EpisodeElement[];
+    name:          string;
+    networks:      Network[];
+    overview:      string;
+    id:            number;
+    poster_path:   string;
+    season_number: number;
+    vote_average:  number;
+}
+
+export interface EpisodeElement {
+    air_date:        Date;
+    episode_number:  number;
+    episode_type:    EpisodeType;
+    id:              number;
+    name:            string;
+    overview:        string;
+    production_code: string;
+    runtime:         number;
+    season_number:   number;
+    show_id:         number;
+    still_path:      string;
+    vote_average:    number;
+    vote_count:      number;
+    crew:            Crew[];
+    guest_stars:     Crew[];
+}
+
+export interface Crew {
+    department?:          Department;
+    job?:                 Job;
+    credit_id:            string;
+    adult:                boolean;
+    gender:               number;
+    id:                   number;
+    known_for_department: Department;
+    name:                 string;
+    original_name:        string;
+    popularity:           number;
+    profile_path:         null | string;
+    character?:           string;
+    order?:               number;
+}
+
+
+export type Job = "Director" | "Editor" | "Director of Photography" | "Writer" | "Teleplay" | "Story";
+
+export type EpisodeType = "standard" | "finale";

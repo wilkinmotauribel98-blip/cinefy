@@ -76,7 +76,7 @@ export default function Hero({ details, media }: DetailsProps){
   const dot = <span className="w-1 h-1 rounded-full bg-zinc-500"></span>
   
   return(
-    <section className="flex gap-10 mt-10 flex-col px-5 items-center w-full   lg:items-stretch lg:flex-row">
+    <section className="flex gap-10 mt-10 flex-col items-center w-full   lg:items-stretch lg:flex-row">
       <div className="rounded-2xl overflow-hidden  lg:w-3/10  xl:w-3.5/10 max-w-100 h-fit">
         <img 
           src={`https://image.tmdb.org/t/p/w500/${heroInfo?.image}`} 
