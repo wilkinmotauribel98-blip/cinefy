@@ -1,19 +1,14 @@
 import TagButton from "../ui/TagButton"
 import RenderResults from "./RenderResults";
+import RenderResultsSkeleton from "./RenderResultsSkeleton";
 import { useState, useEffect } from "react"
 import { useDebounce } from "@/hooks/useDebounce";
 import { useFetch } from "@/hooks/useFetch";
+import { useDelayedFlag } from "@/hooks/useDelayedFlag";
 import { type SearchResponse } from "@/types/types";
-
-export const Tags = {
-  MOVIES: 'Movies',
-  SERIES: 'Series',
-  FAVORITES: 'Favorites',
-  ALL: 'All'
-}
+import { Tags } from "./tags";
 
 export default function HomeContent(){
-
   const { MOVIES, SERIES, FAVORITES, ALL } = Tags
   const [active, setActive] = useState<string>(ALL);
   const [size, setSize] = useState<number>(window.innerWidth);
@@ -21,26 +16,21 @@ export default function HomeContent(){
   const debouncedQuery = useDebounce(query, 400);
   const SEARCH_URL = `https://api.themoviedb.org/3/search/multi?query=${debouncedQuery || ''}`
   const { data, loading, error } = useFetch<SearchResponse>(SEARCH_URL);
-
+  const showNoResults = useDelayedFlag(!loading && !error && !data);
   
-
   useEffect(()=>{
-    const sizer = ()=> setSize(window.innerWidth);
+    const sizer = ()=> {
+      const nextSize = window.innerWidth;
+      setSize(nextSize);
+
+      if(nextSize < 768) {
+        setActive(current => current === Tags.FAVORITES ? Tags.ALL : current)
+      }
+    };
     addEventListener('resize', sizer);
     return ()=> removeEventListener('resize', sizer)
   }, [])
 
-  useEffect(()=>{
-    size < 768 && active === FAVORITES && setActive(ALL) 
-  }, [active, size])
-  
-
-  if(!data) return (
-    <p role="status" className="text-zinc-400 text-lg mt-7">
-      {loading ? "Loading results…" : error ? "Results could not be loaded." : "No results found."}
-    </p>
-  )
-  
   return(
     <>
 
@@ -73,7 +63,23 @@ export default function HomeContent(){
       {size >= 768 && <TagButton title={FAVORITES} isActive={active == FAVORITES} setActive={setActive} />}
     </section>
 
-    <RenderResults filter={active} data={data} query={query}/>
+    {loading && <RenderResultsSkeleton />}
+
+    {!loading && error && (
+      <p role="alert" className="text-zinc-400 text-lg mt-7">
+        Results could not be loaded.
+      </p>
+    )}
+
+    {!loading && !error && data && (
+      <RenderResults filter={active} data={data} query={query}/>
+    )}
+
+    {showNoResults && (
+      <p role="status" className="text-zinc-400 text-lg mt-7">
+        No results found.
+      </p>
+    )}
     
     </>
 

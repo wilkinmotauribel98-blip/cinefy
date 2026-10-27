@@ -168,9 +168,8 @@ export interface Season {
 }
 
 
-export type Episodes = Episode[];
 
-export interface Episode {
+export interface SeasonResponse {
     _id:           string;
     air_date:      Date;
     episodes:      EpisodeElement[];

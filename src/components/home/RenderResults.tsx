@@ -1,5 +1,6 @@
-import { Tags } from "./HomeContent";
+import { Tags } from "./tags";
 import { useMemo } from "react";
+import { useDelayedFlag } from "@/hooks/useDelayedFlag";
 import { type SearchResponse } from "@/types/types";
 import ResultCard from "./ResultCard";
 import { useSearchParams } from "react-router-dom";
@@ -9,10 +10,6 @@ type RenderResultsProps ={
   data : SearchResponse,
   query?: string
 }
-
-// Pagination shows the first and last page at the edges, a window around the
-// current page, and ellipses in between.
-
 // TMDB returns 20 results per page; after discarding "person" (and other items
 // without a poster) the number of cards per page varies. Known limitation of /search/multi.
 
@@ -35,9 +32,11 @@ export default function RenderResults({ filter, data, query }:RenderResultsProps
       break;
       default: return results.filter(e => e.media_type == 'movie' || e.media_type === 'tv');
     }
-    }, [filter, results])
+    }, [ALL, MOVIES, SERIES, filter, results])
 
-    
+  const showNoResults = useDelayedFlag(filtereds.length === 0 && Boolean(query));
+
+
   return(
    <section className="mt-5">
     <div className="flex justify-between">
@@ -48,13 +47,13 @@ export default function RenderResults({ filter, data, query }:RenderResultsProps
       </p>
       </>}
     </div>
-    {filtereds.length === 0 && query && (
+    {showNoResults && (
       <p role="status" className="text-zinc-400 text-lg mt-5">
         No results found.
       </p>
     )}
     <div className="grid px-3 grid-cols-[repeat(auto-fill,minmax(140px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(220px,1fr))] mt-5 gap-4 md:gap-7">
-      {filtereds.map((r)=> <ResultCard key={r.id} result={r}/>)}
+      {filtereds.map((r, i)=> <ResultCard key={r.id} result={r} isLazy={i > 7}/>)}
     </div>
     {filtereds.length > 0 && <nav aria-label="Pagination">
       <ul className="flex gap-2 my-5 w-fit m-auto">

@@ -11,10 +11,10 @@ type SeasonButtonProps = {
 export default function SeasonButton({ seasonNumber, active, setCurrentSeason }: SeasonButtonProps){
   return(
     <button 
-      className={ `${active ? 'bg-button' : 'bg-secondary'} py-2 rounded-full px-4 shrink-0 text-white `}
-      onClick={()=> setCurrentSeason(seasonNumber + 1)}
+      className={ `${active ? 'bg-button' : 'bg-secondary'} cursor-pointer py-2 rounded-full px-4 shrink-0 text-white `}
+      onClick={()=> setCurrentSeason(seasonNumber)}
       >
-        Season {seasonNumber + 1}
+        {seasonNumber === 0 ? 'OVAS' :  'Season ' + seasonNumber}
     </button>
   )
 }

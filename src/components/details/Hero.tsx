@@ -1,6 +1,6 @@
 import { type DetailsMovieType, type DetailsSeriesType  } from "@/types/Details"
 import { publicUrl } from "@/utils/publicURL"
-import { useEffect, useState } from "react"
+import { useMemo } from "react"
 
 type DetailsProps ={
   details: DetailsMovieType | DetailsSeriesType,
@@ -30,13 +30,12 @@ type HeroType = {
 
 
 export default function Hero({ details, media }: DetailsProps){
-  const [heroInfo, setHeroInfo] = useState<HeroType>();
+  const heroInfo = useMemo<HeroType>(()=>{
+    const MovieDetails = details as DetailsMovieType;
+    const SeriesDetails = details as DetailsSeriesType;
 
-  const MovieDetails = details as DetailsMovieType;
-  const SeriesDetails = details as DetailsSeriesType;
-  useEffect(()=>{
     if(media === 'movie'){
-      setHeroInfo({
+      return {
         title: MovieDetails.title,
         image: MovieDetails.poster_path ?? MovieDetails.backdrop_path,
         originalTitle : MovieDetails?.original_title,
@@ -50,28 +49,26 @@ export default function Hero({ details, media }: DetailsProps){
         laguanjes: MovieDetails.spoken_languages.map(e=> e.english_name).join(', '),
         tabTitle2: 'Debut',
         tabTitle3: 'Languajes'
-      })
+      }
     }
-  else {
-      setHeroInfo({
-        title: SeriesDetails.name || SeriesDetails.original_name,
-        image: SeriesDetails.poster_path ?? SeriesDetails.backdrop_path,
-        originalTitle : SeriesDetails?.original_name,
-        year: String(SeriesDetails.first_air_date),
-        sinopsis: SeriesDetails.overview,
-        episodes: SeriesDetails.number_of_episodes,
-        producer: SeriesDetails?.production_companies[0]?.name,
-        creator: SeriesDetails?.created_by[0]?.name,
-        average: Number(SeriesDetails.vote_average.toFixed(1)),
-        genres: SeriesDetails.genres,
-        status: SeriesDetails.status,
-        seasons: SeriesDetails.seasons.length,
-        tabTitle2: 'Producer',
-        tabTitle3: 'Episodes',
-        
-      })
+
+    return {
+      title: SeriesDetails.name || SeriesDetails.original_name,
+      image: SeriesDetails.poster_path ?? SeriesDetails.backdrop_path,
+      originalTitle : SeriesDetails?.original_name,
+      year: String(SeriesDetails.first_air_date),
+      sinopsis: SeriesDetails.overview,
+      episodes: SeriesDetails.number_of_episodes,
+      producer: SeriesDetails?.production_companies[0]?.name,
+      creator: SeriesDetails?.created_by[0]?.name,
+      average: Number(SeriesDetails.vote_average.toFixed(1)),
+      genres: SeriesDetails.genres,
+      status: SeriesDetails.status,
+      seasons: SeriesDetails.seasons.length,
+      tabTitle2: 'Producer',
+      tabTitle3: 'Episodes',
     }
-  }, [])
+  }, [details, media])
 
   const dot = <span className="w-1 h-1 rounded-full bg-zinc-500"></span>
   
