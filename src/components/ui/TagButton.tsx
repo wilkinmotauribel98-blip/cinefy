@@ -1,7 +1,9 @@
+import type { Dispatch, SetStateAction } from "react"
+
 interface TagButtonProps {
   title:string
   isActive:boolean
-  setActive: (value: string) => void
+  setActive: Dispatch<SetStateAction<string>>
 }
 
 
@@ -11,7 +13,7 @@ export default function TagButton({ title, isActive, setActive }: TagButtonProps
     <button 
     aria-pressed={isActive}
     className={`rounded-full text-white py-2 px-6 cursor-pointer font-semibold ${isActive ? onActive : 'bg-secondary text-zinc-400'}`}
-    onClick={()=>setActive(title)}
+    onClick={()=> setActive(title)}
     >{title}
     </button>
   )

@@ -1,6 +1,8 @@
 import { useEffect, } from "react"
 import { useLocation, Link } from "react-router-dom"
+import { useFavorites } from "@/hooks/useFavorites"
 export default function Header(){
+  const { total } = useFavorites()
   const location = useLocation()
   useEffect(()=>{
     scrollTo(0,0)
@@ -16,10 +18,13 @@ export default function Header(){
           CINEFY
         </Link>
       </div>
+      <Link to={'/favorites'}>
       <div className="flex gap-3">
         <span className="text-zinc-300 text-xl ">Favorites</span>
-        <span className="rounded-full w-6 h-6 bg-red-600 text-white text-center">3</span>
+        <span className="rounded-full w-6 h-6 bg-red-600 text-white text-center">{total}</span>
       </div>
+      </Link>
+      
     </header>
   )
 }

@@ -1,30 +1,16 @@
 import { type DetailsMovieType, type DetailsSeriesType  } from "@/types/Details"
+import { type HeroType } from "@/types/HeroDeatilsType"
 import { publicUrl } from "@/utils/publicURL"
 import { useMemo } from "react"
+import { Link } from "react-router-dom"
+import { useFavorites } from "@/hooks/useFavorites"
+import { type ResultCardProp } from "../home/ResultCard"
+
+
 
 type DetailsProps ={
   details: DetailsMovieType | DetailsSeriesType,
   media: 'movie' | 'tv'
-}
-
-type HeroType = {
-  title: string,
-  image: string,
-  originalTitle: string,
-  year: string,
-  seasons?: number,
-  sinopsis: string,
-  creator?: string,
-  producer:string,
-  episodes?:number,
-  status?: string,
-  runtime?: number,
-  average: number,
-  director?: string,
-  genres: DetailsMovieType['genres'],
-  tabTitle2: string,
-  tabTitle3: string,
-  laguanjes?: string
 }
 
 
@@ -69,11 +55,31 @@ export default function Hero({ details, media }: DetailsProps){
       tabTitle3: 'Episodes',
     }
   }, [details, media])
-
+  const { setFavorites } = useFavorites();
   const dot = <span className="w-1 h-1 rounded-full bg-zinc-500"></span>
-  
+  const favorite:ResultCardProp = {
+    title: heroInfo.title,
+    image: heroInfo.image,
+    id: details.id,
+    mediaType: media,
+    isLazy: false,
+    rating: heroInfo.average,
+    firstAirDate: heroInfo.year
+  }
   return(
-    <section className="flex gap-10 mt-10 flex-col items-center w-full   lg:items-stretch lg:flex-row">
+    <>
+      <Link 
+      to={'/'}
+      >
+      <button className="flex gap-2 text-zinc-400 my-3 cursor-pointer">
+        <svg className="w-6 h-6">
+          <use href={publicUrl('/icons.svg#icon-arrow-back')}></use>
+        </svg>
+        Go back to results
+      </button>
+      </Link>
+
+    <section className="flex gap-10  flex-col items-center w-full   lg:items-stretch lg:flex-row">
       <div className="rounded-2xl overflow-hidden  lg:w-3/10  xl:w-3.5/10 max-w-100 h-fit">
         <img 
           src={`https://image.tmdb.org/t/p/w500/${heroInfo?.image}`} 
@@ -91,7 +97,7 @@ export default function Hero({ details, media }: DetailsProps){
         <div className="mt-6 flex gap-3 items-center ">
           <span className="rounded-full  flex gap-1 text-amber-300 bg-amber-800/40 py-1 px-4 w-fit items-center"> 
           <svg className="w-5 h-5 text-amber-300">
-            <use href={`${publicUrl('/icons.svg#icon-star')}`}></use>
+            <use href={publicUrl('/icons.svg#icon-star')}></use>
           </svg>
           {heroInfo?.average}
         </span>
@@ -114,7 +120,10 @@ export default function Hero({ details, media }: DetailsProps){
         </div>
 
         <div className="flex flex-col lg:flex-row gap-4 mt-6 w-full ">
-          <button className="bg-button text-white font-semibold rounded-full py-3 px-10">Add to favorites</button>
+          <button 
+            className="bg-button text-white font-semibold rounded-full py-3 px-10"
+            onClick={()=>setFavorites(favorite)}
+          >Add to favorites</button>
           <button className="border-2 border-gray-700  text-white font-semibold rounded-full py-3 px-10">Watch trailer</button>
         </div>
 
@@ -136,6 +145,8 @@ export default function Hero({ details, media }: DetailsProps){
         </table>
       </div>
     </section>
+  
+    </>
   )
   
 }

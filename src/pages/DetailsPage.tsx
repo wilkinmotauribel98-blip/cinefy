@@ -9,7 +9,7 @@ import ErrorState from "@/components/ui/ErrorState";
 
 export default function DetailsPage(){
   const { id, mediaType } = useParams();
-  const DETAILS_URL = `https://api.themoviedb.org/3/${mediaType}/${id}?language=es-ES&append_to_response=credits,videos,episode_groups`;
+  const DETAILS_URL = `https://api.themoviedb.org/3/${mediaType}/${id}?language=en-US&append_to_response=credits,videos,episode_groups`;
   const { data, loading, error, retry } = useFetch<DetailsMovieType | DetailsSeriesType>(DETAILS_URL);
 
   if(mediaType !== 'movie' && mediaType !== 'tv') return null
@@ -27,14 +27,14 @@ export default function DetailsPage(){
     <ErrorState
       title="We were unable to load the details"
       message="Check your connection and try again."
-      retry={retry}
+      onRetry={retry}
     />
   )
   return(
     <main className="max-w-360 w-[95%] m-auto mb-20  ">
       <Hero details={data}  media={mediaType}/>
-      <MainCast cast={data.credits.cast}/>
       {mediaType === 'tv' && <Seasons seasons={(data as DetailsSeriesType).seasons } id={id || ''}/>}
+      <MainCast cast={data.credits.cast}/>
     </main> 
   )
 }

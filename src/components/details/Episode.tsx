@@ -10,7 +10,7 @@ interface EpisodeProps {
   isLazy: boolean
 }
 
-export default function Episode({ number, image, title, rating, runtime, date, isLazy  }:EpisodeProps) {
+export default function Episode({ number, image, title, rating, runtime, date, isLazy }:EpisodeProps) {
   return(
     <article className="flex w-full gap-2  bg-secondary max-h-30 rounded-2xl items-center p-2 ">
       <data 
@@ -20,7 +20,7 @@ export default function Episode({ number, image, title, rating, runtime, date, i
       <div className="w-fit">
         <img
           loading={isLazy ? 'lazy' : 'eager'} 
-          className="rounded-2xl object-center max-h-30  posi "
+          className="rounded-2xl object-right aspect-16/12 w-40 object-cover "
           src={optimizedImg(`https://image.tmdb.org/t/p/w500/${image}`, 520, 420)} 
           alt="" />
       </div>
@@ -28,11 +28,11 @@ export default function Episode({ number, image, title, rating, runtime, date, i
         <div>
           <h3 className="text-white text-lg font-sans line-clamp-1">{title}</h3>  
           <div className="text-zinc-400 flex gap-1">
-            <span className="flex gap-1 items-center">
+            {date && <span className="flex gap-1 items-center">
               {date} 
               <div className="bg-zinc-400 w-1 h-1 rounded-full"></div>
-            </span>
-            <span>{runtime} min</span>
+            </span>}
+           {runtime && <span>{runtime} min</span>}
           </div>
         </div>
 

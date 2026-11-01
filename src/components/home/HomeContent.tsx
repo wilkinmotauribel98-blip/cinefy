@@ -1,22 +1,30 @@
-import TagButton from "../ui/TagButton"
-import RenderResults from "./RenderResults";
-import RenderResultsSkeleton from "./RenderResultsSkeleton";
 import { useState, useEffect } from "react"
 import { useDebounce } from "@/hooks/useDebounce";
 import { useFetch } from "@/hooks/useFetch";
 import { useDelayedFlag } from "@/hooks/useDelayedFlag";
 import { type SearchResponse } from "@/types/types";
 import { Tags } from "./tags";
+import { useSavedQuery } from "@/hooks/useSavedQuery";
+
+import TagButton from "../ui/TagButton"
+import RenderResults from "./RenderResults";
+import RenderResultsSkeleton from "./RenderResultsSkeleton";
+
 
 export default function HomeContent(){
-  const { MOVIES, SERIES, FAVORITES, ALL } = Tags
+  const { MOVIES, SERIES, FAVORITES, ALL } = Tags;
   const [active, setActive] = useState<string>(ALL);
   const [size, setSize] = useState<number>(window.innerWidth);
-  const [query, setQuery] = useState<string>(); 
+  const [query, setQuery] = useState<string | undefined>(() => {
+    const { isQuerySaved, savedQuery } = useSavedQuery.getState();
+    return isQuerySaved && savedQuery ? savedQuery : undefined;
+  });
   const debouncedQuery = useDebounce(query, 400);
   const SEARCH_URL = `https://api.themoviedb.org/3/search/multi?query=${debouncedQuery || ''}`
   const { data, loading, error } = useFetch<SearchResponse>(SEARCH_URL);
+  const { setSavedQuery } = useSavedQuery();
   const showNoResults = useDelayedFlag(!loading && !error && !data);
+  
   
   useEffect(()=>{
     const sizer = ()=> {
@@ -31,19 +39,25 @@ export default function HomeContent(){
     return ()=> removeEventListener('resize', sizer)
   }, [])
 
+
+  useEffect(()=>{if(debouncedQuery) setSavedQuery(debouncedQuery)}, [debouncedQuery, setSavedQuery])
+
+
+
   return(
     <>
-
     <form 
       className="mt-7"
       role="search"
       onSubmit={(e)=> e.preventDefault()}
       >
       <div className="border-3 border-button bg-secondary rounded-full px-10 focus-within:ring-2 focus-within:ring-white/60">
+
         <input
           type="search"
           aria-label="Search your favorites movies and series"
           placeholder="Search your favorites movies and series"
+          value={query || ''}
           onChange={(e)=>{
             setQuery(e.target.value)
           }}
@@ -65,7 +79,7 @@ export default function HomeContent(){
 
     {loading && <RenderResultsSkeleton />}
 
-    {!loading && error && (
+    {!data && !loading && (
       <p role="alert" className="text-zinc-400 text-lg mt-7">
         Results could not be loaded.
       </p>
@@ -80,7 +94,7 @@ export default function HomeContent(){
         No results found.
       </p>
     )}
-    
+
     </>
 
   )

@@ -14,7 +14,7 @@ export default function SeasonButton({ seasonNumber, active, setCurrentSeason }:
       className={ `${active ? 'bg-button' : 'bg-secondary'} cursor-pointer py-2 rounded-full px-4 shrink-0 text-white `}
       onClick={()=> setCurrentSeason(seasonNumber)}
       >
-        {seasonNumber === 0 ? 'OVAS' :  'Season ' + seasonNumber}
+        {seasonNumber === 0 ? 'Especials' :  'Season ' + seasonNumber}
     </button>
   )
 }
