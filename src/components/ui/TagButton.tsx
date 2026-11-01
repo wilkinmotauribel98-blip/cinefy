@@ -1,13 +1,16 @@
-import type { Dispatch, SetStateAction } from "react"
+import { type Dispatch, type SetStateAction } from "react";
+import { Tags } from "../home/tags";
 
+
+export type Action = | {type: 'Movies'} | {type: 'Series'} | {type: 'Favorites'} | {type: 'All'}
 interface TagButtonProps {
-  title:string
+  title: (typeof Tags)[keyof typeof Tags]
   isActive:boolean
-  setActive: Dispatch<SetStateAction<string>>
+  setActive: Dispatch<SetStateAction<(typeof Tags)[keyof typeof Tags]>>
 }
 
 
-export default function TagButton({ title, isActive, setActive }: TagButtonProps){
+export default function TagButton({ title, isActive, setActive}: TagButtonProps){
   const onActive = 'bg-button text-white'
   return(
     <button 

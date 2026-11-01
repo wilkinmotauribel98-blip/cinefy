@@ -13,7 +13,7 @@ import RenderResultsSkeleton from "./RenderResultsSkeleton";
 
 export default function HomeContent(){
   const { MOVIES, SERIES, FAVORITES, ALL } = Tags;
-  const [active, setActive] = useState<string>(ALL);
+  const [active, setActive] = useState<(typeof Tags)[keyof typeof Tags]>(ALL);
   const [size, setSize] = useState<number>(window.innerWidth);
   const [query, setQuery] = useState<string | undefined>(() => {
     const { isQuerySaved, savedQuery } = useSavedQuery.getState();
@@ -42,8 +42,6 @@ export default function HomeContent(){
 
   useEffect(()=>{if(debouncedQuery) setSavedQuery(debouncedQuery)}, [debouncedQuery, setSavedQuery])
 
-
-
   return(
     <>
     <form 
@@ -54,10 +52,12 @@ export default function HomeContent(){
       <div className="border-3 border-button bg-secondary rounded-full px-10 focus-within:ring-2 focus-within:ring-white/60">
 
         <input
+          name="search"
           type="search"
           aria-label="Search your favorites movies and series"
           placeholder="Search your favorites movies and series"
           value={query || ''}
+          autoComplete="off"
           onChange={(e)=>{
             setQuery(e.target.value)
           }}

@@ -6,6 +6,7 @@ const HomePage = lazy(()=> import('@/pages/HomePage'))
 const ResultPage = lazy(()=> import('@/pages/ResultsPage'))
 const DetailsPage = lazy(()=> import('@/pages/DetailsPage'))
 const FavoritesPage = lazy(()=> import('@/pages/FavoritesPage'))
+const NotFoundPage = lazy(()=> import('@/pages/NotFoundPage'))
 function App() {
   
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='/search' element={<ResultPage />}/>
         <Route path='/details/:mediaType/:id/:title' element={<DetailsPage />}/>
         <Route path='/favorites' element={<FavoritesPage />}/>
+        <Route path='*' element={<NotFoundPage />}/>
       </Routes>
     </>
   )

@@ -55,7 +55,7 @@ export default function Seasons({ seasons, id }: SeasonsProps){
       key={e.episode_number}
       runtime={e.runtime}
       image={e.still_path}
-      title={e.name}
+      episodeTitle={e.name}
       rating={e.vote_average}
       number={e.episode_number}
       date={String(e.air_date)}

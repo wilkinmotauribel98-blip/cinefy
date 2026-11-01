@@ -28,14 +28,17 @@ export default function ResultCard( { image, title, firstAirDate, id, isLazy, me
     mediaType: mediaType,
     rating: rating
   }
+  
   if(!image) return
   return(
 <article className="relative rounded-2xl bg-secondary overflow-hidden">
     <button
         onClick={()=> setFavorites(f)}
+        aria-label={isFavorite(id) ? `Remove ${title} from favorites` : `Add ${title} to favorites`}
+        aria-pressed={isFavorite(id)}
         className="z-70 absolute top-3 right-2 cursor-pointer "
       >
-        <svg className="w-10 h-10">
+        <svg className="w-10 h-10" aria-hidden="true">
           <use href={publicUrl(`/icons.svg#${isFavorite(id) ? 'heart-icon' : 'icon-void-heart'}`)}></use>
         </svg>
       </button>
@@ -49,7 +52,7 @@ export default function ResultCard( { image, title, firstAirDate, id, isLazy, me
         <img src={optimizedImg(`https://image.tmdb.org/t/p/w500/${image}`, 420, 620)}
         alt={`Poster of ${title}`}
         loading={isLazy ? 'lazy' : 'eager'}
-        className="aspect-5/7 h-full"
+        className="aspect-5/7 h-full w-full"
         />
       </div>
       <div className="py-3 pl-4">
@@ -60,11 +63,11 @@ export default function ResultCard( { image, title, firstAirDate, id, isLazy, me
           {mediaType}
         </span>
       </div>
-        <span className="absolute left-2 bottom-22 items-center flex gap-1 rounded-2xl px-3 py-1 bg-primary text-amber-300">
-          <svg className="w-5 h-5">
+        <span className="absolute left-2 bottom-22 items-center flex gap-1 rounded-2xl px-3 py-1 bg-primary text-amber-300" role="img" aria-label={`Rating: ${rating?.toFixed(1)}`}>
+          <svg className="w-5 h-5" aria-hidden="true">
             <use href={publicUrl('/icons.svg#icon-star')}></use>
           </svg>
-          {rating?.toFixed(1)}
+          <span aria-hidden="true">{rating?.toFixed(1)}</span>
         </span>
       </Link>
     </article>

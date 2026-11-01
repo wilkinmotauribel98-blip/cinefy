@@ -14,6 +14,16 @@ type DetailsProps ={
 }
 
 
+function Button({favorite}:{favorite:ResultCardProp}){
+  const { setFavorites, isFavorite } = useFavorites()
+  return(
+    <button 
+        className={`${isFavorite(favorite.id) ? 'bg-red-500' : 'bg-button'} cursor-pointer text-white font-semibold rounded-full py-3 px-10`}
+        onClick={()=>setFavorites(favorite)}
+     >{isFavorite(favorite.id) ? 'Remove of favorites' : 'Add to favorites'}</button>
+  )
+}
+
 
 export default function Hero({ details, media }: DetailsProps){
   const heroInfo = useMemo<HeroType>(()=>{
@@ -55,7 +65,6 @@ export default function Hero({ details, media }: DetailsProps){
       tabTitle3: 'Episodes',
     }
   }, [details, media])
-  const { setFavorites } = useFavorites();
   const dot = <span className="w-1 h-1 rounded-full bg-zinc-500"></span>
   const favorite:ResultCardProp = {
     title: heroInfo.title,
@@ -71,11 +80,11 @@ export default function Hero({ details, media }: DetailsProps){
       <Link 
       to={'/'}
       >
-      <button className="flex gap-2 text-zinc-400 my-3 cursor-pointer">
-        <svg className="w-6 h-6">
-          <use href={publicUrl('/icons.svg#icon-arrow-back')}></use>
+      <button className="flex gap-2 text-zinc-400 my-4 -ml-3 cursor-pointer">
+        <svg className="w-6 h-6 text-white">
+          <use href={publicUrl('/icons.svg#icon-arrow-left')}></use>
         </svg>
-        Go back to results
+          Back to results
       </button>
       </Link>
 
@@ -120,10 +129,7 @@ export default function Hero({ details, media }: DetailsProps){
         </div>
 
         <div className="flex flex-col lg:flex-row gap-4 mt-6 w-full ">
-          <button 
-            className="bg-button text-white font-semibold rounded-full py-3 px-10"
-            onClick={()=>setFavorites(favorite)}
-          >Add to favorites</button>
+          <Button favorite={favorite}/>
           <button className="border-2 border-gray-700  text-white font-semibold rounded-full py-3 px-10">Watch trailer</button>
         </div>
 

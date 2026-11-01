@@ -1,16 +1,18 @@
 import { optimizedImg } from "@/utils/optimizedImg"
 import { publicUrl } from "@/utils/publicURL"
+import { useParams } from "react-router-dom"
 interface EpisodeProps {
   number: number,
   image: string,
-  title: string,
+  episodeTitle: string,
   rating: number,
   runtime: number,
   date: string,
   isLazy: boolean
 }
 
-export default function Episode({ number, image, title, rating, runtime, date, isLazy }:EpisodeProps) {
+export default function Episode({ number, image, episodeTitle, rating, runtime, date, isLazy }:EpisodeProps) {
+  const { title } = useParams()
   return(
     <article className="flex w-full gap-2  bg-secondary max-h-30 rounded-2xl items-center p-2 ">
       <data 
@@ -22,11 +24,11 @@ export default function Episode({ number, image, title, rating, runtime, date, i
           loading={isLazy ? 'lazy' : 'eager'} 
           className="rounded-2xl object-right aspect-16/12 w-40 object-cover "
           src={optimizedImg(`https://image.tmdb.org/t/p/w500/${image}`, 520, 420)} 
-          alt="" />
+          alt={`Episode ${number} of ${title}`} />
       </div>
       <div className="flex w-full">
         <div>
-          <h3 className="text-white text-lg font-sans line-clamp-1">{title}</h3>  
+          <h3 className="text-white text-lg font-sans line-clamp-1">{episodeTitle}</h3>  
           <div className="text-zinc-400 flex gap-1">
             {date && <span className="flex gap-1 items-center">
               {date} 
