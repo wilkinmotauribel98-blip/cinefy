@@ -3,9 +3,6 @@ import TagButton from "../ui/TagButton"
 import { useFavorites } from "@/hooks/useFavorites"
 import { useState, useMemo } from "react"
 
-
-
-
 const favoritesTags = {
   LATEST : 'Latest',
   BEST_RATING : 'Best rating'
@@ -34,18 +31,20 @@ export default function FavoritesContent() {
       <TagButton title={LATEST} isActive={active === LATEST} setActive={setActive}/>
       <TagButton title={BEST_RATING} isActive={active === BEST_RATING} setActive={setActive}/>
       </div>
+    <h2 className="sr-only">Saved titles</h2>
     <div 
     className="grid px-3  grid-cols-[repeat(auto-fill,minmax(140px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(220px,1fr))] mt-5 gap-4 md:gap-7">
-        {filtereds?.length && filtereds.map((e)=> <
+        {filtereds?.length && filtereds.map((e, i)=> <
             ResultCard 
             image={e.image}
             title={e.title}
             id={e.id}
-            isLazy={e.isLazy}
+            isLazy={i > 7}
             key={e.id}
             mediaType={e.mediaType}
             firstAirDate={e.firstAirDate}
             rating={e.rating}
+            fetchPriority={i > 7 ? 'low' : 'high'}
           />)}
 
       </div>

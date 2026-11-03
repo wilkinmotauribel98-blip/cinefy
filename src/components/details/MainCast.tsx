@@ -1,4 +1,4 @@
-import { type Credits } from "@/types/Details"
+import type { Credits } from "@/types"
 import MainCastCard from "../ui/MainCastCard"
 interface MainCastProps {
   cast: Credits['cast'],

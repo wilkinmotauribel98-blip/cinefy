@@ -3,7 +3,7 @@ import RenderResultsSkeleton from "@/components/home/RenderResultsSkeleton"
 import ErrorState from "@/components/ui/ErrorState";
 import { useSearchParams } from "react-router-dom";
 import { useFetch } from "@/hooks/useFetch";
-import { type SearchResponse } from "@/types/types";
+import type { SearchResponse } from "@/types";
 export default function ResultPage(){ 
   const [searchParams] = useSearchParams()
   const SEARCH_URL = `https://api.themoviedb.org/3/search/multi?query=${searchParams.get('q')}&page=${searchParams.get('page') || 1}`

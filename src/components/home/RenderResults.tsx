@@ -2,10 +2,13 @@ import { Tags } from "./tags";
 import { useMemo } from "react";
 import { useDelayedFlag } from "@/hooks/useDelayedFlag"
 import { useFavorites } from "@/hooks/useFavorites";
-import { type SearchResponse } from "@/types/types";
-import ResultCard from "./ResultCard";
+import type { SearchResponse } from "@/types";
+import { hasEnoughData } from "@/utils/hasEnoughData";
+
 import { useSearchParams } from "react-router-dom";
 import Pagination from "../ui/Pagination";
+import ResultCard from "./ResultCard";
+
 
 type RenderResultsProps ={
   filter?: string,
@@ -24,17 +27,17 @@ export default function RenderResults({ filter, data, query }:RenderResultsProps
   
   const { ALL, MOVIES, SERIES, FAVORITES } = Tags;
   const { results, total_results, total_pages } = data;
-
+  
   const filtereds = useMemo(()=>{
     switch(filter){
-      case ALL: return results.filter(e => e.media_type == 'movie' || e.media_type === 'tv');
+      case ALL: return results.filter(hasEnoughData).filter(e => e.media_type == 'movie' || e.media_type === 'tv');
       break;
-      case MOVIES: return results.filter(e => e.media_type === 'movie')
+      case MOVIES: return results.filter(hasEnoughData).filter(e => e.media_type === 'movie')
       break;
-      case SERIES: return results.filter(e => e.media_type === 'tv')
+      case SERIES: return results.filter(hasEnoughData).filter(e => e.media_type === 'tv')
       break;
-      case FAVORITES: return results.filter(e => isFavorite(e.id))
-      default: return results.filter(e => e.media_type == 'movie' || e.media_type === 'tv');
+      case FAVORITES: return results.filter(hasEnoughData).filter(e => isFavorite(e.id))
+      default: return results.filter(hasEnoughData).filter(e => e.media_type == 'movie' || e.media_type === 'tv');
     }
     }, [ALL, MOVIES, SERIES, filter, results])
 
@@ -42,12 +45,12 @@ export default function RenderResults({ filter, data, query }:RenderResultsProps
 
 
   return(
-   <section className="mt-5">
+   <section className="mt-5 mb-20">
     <div className="flex justify-between px-3">
       {filtereds.length > 0 && <>
-      <h2 className="text-2xl text-white font-semibold">Results</h2>
+      <h2 className="text-2xl text-white font-semibold">{q? 'Results' : 'Trending this week'}</h2>
       <p role="status" aria-live="polite" className="text-lg text-zinc-400 ">
-        Showing {filtereds.length} of {total_results} results
+        {q && filtereds.length && `Showing ${filtereds.length} of ${total_results} results`}
       </p>
       </>}
     </div>
@@ -67,9 +70,10 @@ export default function RenderResults({ filter, data, query }:RenderResultsProps
           firstAirDate={r.first_air_date || r.release_date}
           id={r.id}
           rating={r.vote_average}
+          fetchPriority={i > 7 ? 'low' : 'high' }
           />)}
     </div>
-    {filtereds.length > 0 && <nav aria-label="Pagination">
+    {filtereds.length > 0 && q && <nav aria-label="Pagination">
       <ul className="flex gap-2 my-15 w-fit m-auto">
         <Pagination query={q} page={page} total_pages={total_pages}/>
       </ul>

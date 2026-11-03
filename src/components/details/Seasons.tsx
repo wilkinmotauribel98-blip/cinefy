@@ -1,4 +1,4 @@
-import { type DetailsSeriesType, type SeasonResponse} from "@/types/Details"
+import type { SeriesDetails, SeasonDetails } from "@/types"
 import { useState } from "react"
 import { useFetch } from "@/hooks/useFetch"
 import SeasonButton from "../ui/SeasonButton"
@@ -6,14 +6,14 @@ import Episode from "./Episode"
 import EpisodesSkeleton from "./EpisodesSkeleton"
 
 interface SeasonsProps{
-  seasons: DetailsSeriesType['seasons'],
+  seasons: SeriesDetails['seasons'],
   id: string
 }
 
 export default function Seasons({ seasons, id }: SeasonsProps){
   const [ currentSeason, setCurrentSeason ] = useState<number>(1);
   const SEASON_URL = `https://api.themoviedb.org/3/tv/${id}/season/${currentSeason}?language=en-US`
-  const { data, loading, error, retry } = useFetch<SeasonResponse>(SEASON_URL)
+  const { data, loading, error, retry } = useFetch<SeasonDetails>(SEASON_URL)
   
   return(
     <section className="mt-7 pr-3 ">

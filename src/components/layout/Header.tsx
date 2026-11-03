@@ -10,7 +10,8 @@ export default function Header(){
   }, [location.search, location.pathname])
 
   return(
-    <header className="bg-header w-full m-auto flex justify-between px-5 py-5 ">
+    <header className="bg-header ">
+    <div className="max-w-400 bg-header w-full m-auto flex justify-between  px-2 py-5 ">
       <div>
         <Link
           to={'/'}
@@ -23,7 +24,7 @@ export default function Header(){
   <div className="flex gap-10">
     {location.pathname !== '/' && <Link 
       to={'/'}
-      className="text-zinc-400 text-xl"
+      className="text-zinc-400 text-xl hidden md:block"
     >
       Home
     </Link> }
@@ -36,6 +37,7 @@ export default function Header(){
       </Link>
     </div>
     
+    </div>
       
     </header>
   )

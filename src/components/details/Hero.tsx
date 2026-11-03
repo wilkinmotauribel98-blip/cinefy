@@ -1,20 +1,18 @@
-import { type DetailsMovieType, type DetailsSeriesType  } from "@/types/Details"
-import { type HeroType } from "@/types/HeroDeatilsType"
+import type { Favorite, HeroView, MovieDetails, SeriesDetails } from "@/types"
 import { publicUrl } from "@/utils/publicURL"
 import { useMemo } from "react"
 import { Link } from "react-router-dom"
 import { useFavorites } from "@/hooks/useFavorites"
-import { type ResultCardProp } from "../home/ResultCard"
 
 
 
 type DetailsProps ={
-  details: DetailsMovieType | DetailsSeriesType,
+  details: MovieDetails | SeriesDetails,
   media: 'movie' | 'tv'
 }
 
 
-function Button({favorite}:{favorite:ResultCardProp}){
+function Button({favorite}:{favorite:Favorite}){
   const { setFavorites, isFavorite } = useFavorites()
   return(
     <button 
@@ -26,9 +24,9 @@ function Button({favorite}:{favorite:ResultCardProp}){
 
 
 export default function Hero({ details, media }: DetailsProps){
-  const heroInfo = useMemo<HeroType>(()=>{
-    const MovieDetails = details as DetailsMovieType;
-    const SeriesDetails = details as DetailsSeriesType;
+  const heroInfo = useMemo<HeroView>(()=>{
+    const MovieDetails = details as MovieDetails;
+    const SeriesDetails = details as SeriesDetails;
 
     if(media === 'movie'){
       return {
@@ -36,13 +34,13 @@ export default function Hero({ details, media }: DetailsProps){
         image: MovieDetails.poster_path ?? MovieDetails.backdrop_path,
         originalTitle : MovieDetails?.original_title,
         year: String(MovieDetails.release_date),
-        sinopsis: MovieDetails.overview,
-        runtime: MovieDetails.runtime,
+        synopsis: MovieDetails.overview,
+        runtime: MovieDetails.runtime ?? undefined,
         producer: MovieDetails.production_companies[0].name,
         average:  Number(MovieDetails.vote_average.toFixed(2)),
         genres: MovieDetails.genres,
         status: MovieDetails.status,
-        laguanjes: MovieDetails.spoken_languages.map(e=> e.english_name).join(', '),
+        languages: MovieDetails.spoken_languages.map(e=> e.english_name).join(', '),
         tabTitle2: 'Debut',
         tabTitle3: 'Languajes'
       }
@@ -53,7 +51,7 @@ export default function Hero({ details, media }: DetailsProps){
       image: SeriesDetails.poster_path ?? SeriesDetails.backdrop_path,
       originalTitle : SeriesDetails?.original_name,
       year: String(SeriesDetails.first_air_date),
-      sinopsis: SeriesDetails.overview,
+      synopsis: SeriesDetails.overview,
       episodes: SeriesDetails.number_of_episodes,
       producer: SeriesDetails?.production_companies[0]?.name,
       creator: SeriesDetails?.created_by[0]?.name,
@@ -66,12 +64,11 @@ export default function Hero({ details, media }: DetailsProps){
     }
   }, [details, media])
   const dot = <span className="w-1 h-1 rounded-full bg-zinc-500"></span>
-  const favorite:ResultCardProp = {
+  const favorite:Favorite = {
     title: heroInfo.title,
     image: heroInfo.image,
     id: details.id,
     mediaType: media,
-    isLazy: false,
     rating: heroInfo.average,
     firstAirDate: heroInfo.year
   }
@@ -125,7 +122,7 @@ export default function Hero({ details, media }: DetailsProps){
 
         <div className=" mt-5">
           <span className="text-2xl text-white font-semibold ">Sinopsis</span>
-          <p className="text-zinc-400 mt-3 max-w-220 lg:max-w-200  xl:max-w-180">{heroInfo?.sinopsis}</p>
+          <p className="text-zinc-400 mt-3 max-w-220 lg:max-w-200  xl:max-w-180">{heroInfo?.synopsis}</p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-4 mt-6 w-full ">
@@ -144,7 +141,7 @@ export default function Hero({ details, media }: DetailsProps){
           <tbody>
             <tr>
               <th className="px-15 pb-5 text-white" >{media === 'movie' ? heroInfo?.year : heroInfo?.producer}</th>
-              <th className="px-15 pb-5 text-white">{heroInfo?.episodes || heroInfo?.laguanjes}</th>
+              <th className="px-15 pb-5 text-white">{heroInfo?.episodes || heroInfo?.languages}</th>
               <th className="px-15 pb-5 text-white">{heroInfo?.status}</th>
             </tr>
           </tbody>

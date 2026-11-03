@@ -1,17 +1,10 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { type ResultCardProp } from "@/components/home/ResultCard";
-interface Favorites  {
-  favorites: {[id:number]: ResultCardProp},
-  setFavorites: (movie: ResultCardProp) => void,
-  deleteFavorites: (id: number) => void,
-  isFavorite: (id:number) => boolean,
-  total: number
-}
+import type { FavoritesState } from "@/types";
 
 
 
-export const useFavorites = create<Favorites>()(
+export const useFavorites = create<FavoritesState>()(
   persist(
     (set, get) => ({
       favorites: {},

@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
-import { lazy } from 'react'
+import { lazy, Suspense } from 'react'
 import Header from '@/components/layout/Header'
+import PageFallback from '@/components/ui/PageFallback'
 
 const HomePage = lazy(()=> import('@/pages/HomePage'))
 const ResultPage = lazy(()=> import('@/pages/ResultsPage'))
@@ -12,13 +13,15 @@ function App() {
   return (
     <>
       <Header />
-      <Routes>
-        <Route path='/' element={<HomePage />}/>
-        <Route path='/search' element={<ResultPage />}/>
-        <Route path='/details/:mediaType/:id/:title' element={<DetailsPage />}/>
-        <Route path='/favorites' element={<FavoritesPage />}/>
-        <Route path='*' element={<NotFoundPage />}/>
-      </Routes>
+      <Suspense fallback={<PageFallback />}>
+        <Routes>
+          <Route path='/' element={<HomePage />}/>
+          <Route path='/search' element={<ResultPage />}/>
+          <Route path='/details/:mediaType/:id/:title' element={<DetailsPage />}/>
+          <Route path='/favorites' element={<FavoritesPage />}/>
+          <Route path='*' element={<NotFoundPage />}/>
+        </Routes>
+      </Suspense>
     </>
   )
 }

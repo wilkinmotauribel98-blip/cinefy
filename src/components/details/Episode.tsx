@@ -3,10 +3,10 @@ import { publicUrl } from "@/utils/publicURL"
 import { useParams } from "react-router-dom"
 interface EpisodeProps {
   number: number,
-  image: string,
+  image: string | null,
   episodeTitle: string,
   rating: number,
-  runtime: number,
+  runtime: number | null,
   date: string,
   isLazy: boolean
 }
@@ -23,7 +23,7 @@ export default function Episode({ number, image, episodeTitle, rating, runtime, 
         <img
           loading={isLazy ? 'lazy' : 'eager'} 
           className="rounded-2xl object-right aspect-16/12 w-40 object-cover "
-          src={optimizedImg(`https://image.tmdb.org/t/p/w500/${image}`, 520, 420)} 
+          src={image ? optimizedImg(`https://image.tmdb.org/t/p/w500/${image}`, 520, 420) : undefined} 
           alt={`Episode ${number} of ${title}`} />
       </div>
       <div className="flex w-full">
