@@ -131,13 +131,17 @@ src/
 
 ## Deployment
 
-The app is configured for GitHub Pages with `base: '/cinefy'` in `vite.config.ts`; the router's `basename` is derived from `import.meta.env.BASE_URL`, so no extra configuration is needed.
+The app is configured for Vercel (`base: '/'` in `vite.config.ts`, SPA rewrites in `vercel.json`).
 
 ```bash
 pnpm build
 ```
 
-Publish the contents of `dist/` to your Pages branch (e.g. `gh-pages`). If you use client-side routing with deep links on Pages, add an SPA fallback (`404.html`) so refreshes on routes like `/details/...` resolve to `index.html`.
+Set the `VITE_TMDB_API_KEY` environment variable in the Vercel project settings (Production and Preview), then deploy with the Vercel dashboard or:
+
+```bash
+vercel --prod
+```
 
 ## Attribution
 

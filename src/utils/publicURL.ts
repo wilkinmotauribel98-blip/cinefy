@@ -1,1 +1,3 @@
-export const publicUrl = (path = '') => `${import.meta.env.BASE_URL}${String(path)}`;
+const base = import.meta.env.BASE_URL.replace(/\/+$/, '')
+
+export const publicUrl = (path = '') => `${base}/${String(path).replace(/^\/+/, '')}`

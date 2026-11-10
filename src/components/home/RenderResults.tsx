@@ -25,21 +25,17 @@ export default function RenderResults({ filter, data, query }:RenderResultsProps
   const page = Number(searchParams.get('page')) || 1;
   const q = searchParams.get('q') ?? query ?? '';
   
-  const { ALL, MOVIES, SERIES, FAVORITES } = Tags;
   const { results, total_results, total_pages } = data;
   
   const filtereds = useMemo(()=>{
     switch(filter){
-      case ALL: return results.filter(hasEnoughData).filter(e => e.media_type == 'movie' || e.media_type === 'tv');
-      break;
-      case MOVIES: return results.filter(hasEnoughData).filter(e => e.media_type === 'movie')
-      break;
-      case SERIES: return results.filter(hasEnoughData).filter(e => e.media_type === 'tv')
-      break;
-      case FAVORITES: return results.filter(hasEnoughData).filter(e => isFavorite(e.id))
+      case Tags.MOVIES: return results.filter(hasEnoughData).filter(e => e.media_type === 'movie')
+      case Tags.SERIES: return results.filter(hasEnoughData).filter(e => e.media_type === 'tv')
+      case Tags.FAVORITES: return results.filter(hasEnoughData).filter(e => isFavorite(e.id))
+      case Tags.ALL:
       default: return results.filter(hasEnoughData).filter(e => e.media_type == 'movie' || e.media_type === 'tv');
     }
-    }, [ALL, MOVIES, SERIES, filter, results])
+    }, [filter, results, isFavorite])
 
   const showNoResults = useDelayedFlag(filtereds.length === 0 && Boolean(query));
 

@@ -35,7 +35,6 @@ export default function ResultCard( { image, title, firstAirDate, id, isLazy, me
 
     <Link 
       to={`/details/${mediaType}/${id}/${title?.replace(/\s/g, '-')}`}
-      className="  "
     >
       <div className="rounded-2xl overflow-hidden" >
         <img src={optimizedImg(`https://image.tmdb.org/t/p/w500/${image}`, 300, 420)}

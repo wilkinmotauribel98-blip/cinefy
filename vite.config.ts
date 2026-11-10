@@ -2,7 +2,7 @@ import babel from "@rolldown/plugin-babel";
 import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import tailwindcss from '@tailwindcss/vite'
-import path from "path";
+import path from "node:path";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -10,10 +10,10 @@ export default defineConfig({
     react(),
     tailwindcss(), 
     babel({ presets: [reactCompilerPreset()] })],
-    base: '/cinefy',
+    base: '/',
     resolve: {
       alias: {
-      "@": path.resolve(__dirname, "src")
+      "@": path.resolve(import.meta.dirname, "src")
       }
     }
 
