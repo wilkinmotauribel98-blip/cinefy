@@ -18,13 +18,16 @@ export function useFetch<T>(url:string) {
 
   useEffect(()=>{
     const abortController = new AbortController();
+    const token = (import.meta.env.VITE_TMDB_API_KEY ?? '')
+      .trim()
+      .replace(/^['"]|['"]$/g, '');
 
     fetch(url, {
       signal: abortController.signal,
-      headers: { Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`}
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
      })
     .then((res)=>{
-      if(!res.ok) throw new Error(`HTTP ${res.status}`)
+      if(!res.ok) throw new Error(res.status === 401 ? 'HTTP 401 (revisa VITE_TMDB_API_KEY)' : `HTTP ${res.status}`)
       return res.json();
     })
     .then((d:T) => {
